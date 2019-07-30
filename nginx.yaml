@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-sigterm
+  labels:
+    app: nginx-sigterm
+spec:
+  containers:
+    - name: main
+      image: alexmt/sigterm-test
+      imagePullPolicy: IfNotPresent
+      command: ["/entry.sh"]
+      ports:
+        - containerPort: 80
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-sigterm
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx-sigterm
+  type: LoadBalancer
